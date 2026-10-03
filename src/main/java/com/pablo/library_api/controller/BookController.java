@@ -2,11 +2,10 @@ package com.pablo.library_api.controller;
 
 import com.pablo.library_api.model.Book;
 import com.pablo.library_api.service.BookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -21,6 +20,21 @@ public class BookController {
     @GetMapping
     public List<Book> findAll(){
         return bookService.findAll();
+    }
+
+    @PostMapping
+    public Book save(@RequestBody Book book){
+        return bookService.save(book);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Book> findById(@PathVariable Long id) {
+        return bookService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        bookService.delete(id);
     }
 
 }
