@@ -11,14 +11,20 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 
+@Table(name = "members")
 @Entity
+
 public class Member {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column (nullable = false)
     private String name;
+
     @Column (nullable = false, unique = true)
     private String email;
+
     @CreationTimestamp
     private LocalDateTime registrationDate;
 
