@@ -10,6 +10,7 @@ import com.pablo.library_api.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -43,5 +44,8 @@ public class LoanService {
         loan.setStatus(LoanStatus.ATIVO);
         return loanRepository.save(loan);
 
+    }
+    public List<Loan> findAll() {
+        return loanRepository.findAll();
     }
 }
