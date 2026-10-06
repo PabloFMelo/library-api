@@ -2,7 +2,7 @@ spring:
   application:
     name: library-api
   datasource:
-    url: jdbc:h2:mem:librarydb
+    url: jdbc:h2:mem:librarydb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
     password:

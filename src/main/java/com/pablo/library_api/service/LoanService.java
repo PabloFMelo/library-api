@@ -48,4 +48,18 @@ public class LoanService {
     public List<Loan> findAll() {
         return loanRepository.findAll();
     }
+    public Loan devolverEmprestimo(Long loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
+
+        loan.setReturnDate(LocalDateTime.now());
+        loan.setStatus(LoanStatus.DEVOLVIDO);
+
+        Book book = loan.getBook();
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+
+        return loanRepository.save(loan);
+
+    }
+
 }

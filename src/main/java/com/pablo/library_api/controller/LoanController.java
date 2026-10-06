@@ -17,7 +17,7 @@ public class LoanController {
      }
 
      @GetMapping
-    public List<Loan> findAll(){
+     public List<Loan> findAll(){
          return loanService.findAll();
      }
 
@@ -25,4 +25,9 @@ public class LoanController {
      public Loan criarEmprestimo(@RequestParam Long bookId, @RequestParam Long memberId){
         return loanService.criarEmprestimo(bookId, memberId);
      }
+     @PutMapping("/{id}")
+     public Loan devolverEmprestimo(@PathVariable Long id){
+         return loanService.devolverEmprestimo(id);
+     }
+
 }
