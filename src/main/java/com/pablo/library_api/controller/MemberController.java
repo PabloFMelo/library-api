@@ -5,7 +5,6 @@ import com.pablo.library_api.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/members")
@@ -28,7 +27,7 @@ public class MemberController {
         return memberService.save(member);
     }
     @GetMapping("/{id}")
-    public Optional<Member> findById(@PathVariable Long id){
+    public Member findById(@PathVariable Long id){
         return memberService.findById(id);
     }
 

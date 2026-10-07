@@ -1,10 +1,10 @@
 package com.pablo.library_api.service;
+import com.pablo.library_api.exception.RecursoNaoEncontradoException;
 import com.pablo.library_api.model.Member;
 import com.pablo.library_api.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -20,8 +20,9 @@ public class MemberService {
     public List<Member> findAll(){
         return memberRepository.findAll();
     }
-    public Optional<Member> findById(Long id){
-        return memberRepository.findById(id);
+    public Member findById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado"));
     }
     public void delete(Long id){
         memberRepository.deleteById(id);

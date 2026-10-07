@@ -1,5 +1,7 @@
 package com.pablo.library_api.service;
 
+import com.pablo.library_api.exception.RecursoNaoEncontradoException;
+import com.pablo.library_api.exception.RegraDeNegocioException;
 import com.pablo.library_api.model.Book;
 import com.pablo.library_api.model.Loan;
 import com.pablo.library_api.model.LoanStatus;
@@ -26,13 +28,13 @@ public class LoanService {
 
     public Loan criarEmprestimo(Long bookId, Long memberId) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Livro não encontrado"));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Membro não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado"));
 
         if (book.getAvailableCopies() <= 0){
-            throw new RuntimeException("Não há exemplares para empréstimo");
+            throw new RegraDeNegocioException("Não há exemplares para empréstimo");
         }
 
         book.setAvailableCopies(book.getAvailableCopies() -1);
@@ -50,7 +52,7 @@ public class LoanService {
     }
     public Loan devolverEmprestimo(Long loanId) {
         Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Empréstimo não encontrado"));
 
         loan.setReturnDate(LocalDateTime.now());
         loan.setStatus(LoanStatus.DEVOLVIDO);

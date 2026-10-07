@@ -1,10 +1,10 @@
 package com.pablo.library_api.service;
 
+import com.pablo.library_api.exception.RecursoNaoEncontradoException;
 import com.pablo.library_api.model.Book;
 import com.pablo.library_api.repository.BookRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -20,8 +20,9 @@ public class BookService {
     public List<Book> findAll(){
         return bookRepository.findAll();
     }
-    public Optional<Book> findById(Long id){
-        return bookRepository.findById(id);
+    public Book findById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Livro não encontrado"));
     }
     public void delete(Long id){
         bookRepository.deleteById(id);
