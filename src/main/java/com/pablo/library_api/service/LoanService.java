@@ -54,6 +54,10 @@ public class LoanService {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Empréstimo não encontrado"));
 
+        if (loan.getStatus() == LoanStatus.DEVOLVIDO){
+            throw new RegraDeNegocioException("Empréstimo já foi devolvido");
+        }
+
         loan.setReturnDate(LocalDateTime.now());
         loan.setStatus(LoanStatus.DEVOLVIDO);
 
