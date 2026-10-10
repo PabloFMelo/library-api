@@ -2,6 +2,7 @@ package com.pablo.library_api.controller;
 
 import com.pablo.library_api.model.Member;
 import com.pablo.library_api.service.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public Member save(@RequestBody Member member){
+    public Member save(@Valid @RequestBody Member member){
         return memberService.save(member);
     }
     @GetMapping("/{id}")

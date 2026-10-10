@@ -2,6 +2,7 @@ package com.pablo.library_api.controller;
 
 import com.pablo.library_api.model.Book;
 import com.pablo.library_api.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class BookController {
     }
 
     @PostMapping
-    public Book save(@RequestBody Book book){
+    public Book save(@Valid @RequestBody Book book){
         return bookService.save(book);
     }
 
