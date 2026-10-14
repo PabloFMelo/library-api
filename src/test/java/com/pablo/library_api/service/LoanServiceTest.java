@@ -18,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
 
@@ -81,6 +83,60 @@ class LoanServiceTest {
         assertSame(member, resultado.getMember());
         assertNotNull(resultado.getDueDate());
     }
+
+    @Test
+    void deveDevolverEmprestimoAtivoERestaurarEstoque() {
+        // Arrange
+        Book book = new Book();
+        book.setAvailableCopies(1);
+
+        Loan loan = new Loan();
+        loan.setBook(book);
+        loan.setStatus(LoanStatus.ATIVO);
+
+        when(loanRepository.findById(1L)).thenReturn(Optional.of(loan));
+        when(loanRepository.save(any(Loan.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        Loan resultado = loanService.devolverEmprestimo(1L);
+
+        // Assert
+        assertEquals(LoanStatus.DEVOLVIDO, resultado.getStatus());
+        assertEquals(2, book.getAvailableCopies());
+        assertNotNull(resultado.getReturnDate());
+    }
+
+    @Test
+    void naoDeveDevolverEmprestimoJaDevolvido() {
+        // Arrange
+        Book book = new Book();
+        book.setAvailableCopies(2);
+
+        Loan loan = new Loan();
+        loan.setBook(book);
+        loan.setStatus(LoanStatus.DEVOLVIDO);
+
+        when(loanRepository.findById(1L)).thenReturn(Optional.of(loan));
+
+        // Act + Assert
+        assertThrows(RegraDeNegocioException.class, () -> loanService.devolverEmprestimo(1L));
+
+        // O estoque não pode ter mudado e nada pode ter sido salvo
+        assertEquals(2, book.getAvailableCopies());
+        verify(loanRepository, never()).save(any());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoEmprestimoNaoExiste() {
+        when(loanRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(RecursoNaoEncontradoException.class,
+                () -> loanService.devolverEmprestimo(1L));
+
+        verify(loanRepository, never()).save(any());
+    }
+
+
 
 
 
