@@ -63,6 +63,10 @@ teste no windows
 Documantação interativa:
 http://localhost:8080/swagger-ui/index.html
 
+Subir o banco com:
+docker compose up -d
+
+(o banco usa a porta 5433, para evitar o mesmo conflito em quem tiver um PostgreSQL instalado.)
 
 3. A API ficará disponível em `http://localhost:8080`.
 
