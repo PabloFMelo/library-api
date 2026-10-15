@@ -9,6 +9,8 @@
 - Lombok
 - Maven
 - Postman (para testes)
+- JUnit 5 
+- Mockito
 
 ## Funcionalidades
 
@@ -19,6 +21,7 @@
 - Bloqueio de empréstimo quando o livro não tem exemplares disponíveis
 - Devolução de empréstimos: registra a data de devolução, muda o status para `DEVOLVIDO` e devolve o exemplar ao estoque
 - Tratamento global de erros: respostas `404` quando um recurso não é encontrado e `400` quando uma regra de negócio é violada, sempre com mensagem clara
+- LoanService possui testes unitários das regras de negício.
 
 ## Como rodar o projeto
 
@@ -41,12 +44,25 @@ cd library-api
 ```bash
 ./mvnw spring-boot:run
 ```
+Executar os testes:
+
+```bash
+.\mvnw test
+```
 
 No Windows, use:
 
 ```bash
 mvnw.cmd spring-boot:run
 ```
+teste no windows
+```bash
+.\mvnw.cmd test
+```
+
+Documantação interativa:
+http://localhost:8080/swagger-ui/index.html
+
 
 3. A API ficará disponível em `http://localhost:8080`.
 
