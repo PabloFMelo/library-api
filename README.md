@@ -5,7 +5,9 @@
 - Java
 - Spring Boot
 - Spring Data JPA
-- H2 Database
+- PostgreSQL
+- Docker
+- Swagger (springdoc-openapi)
 - Lombok
 - Maven
 - Postman (para testes)
@@ -29,6 +31,7 @@
 
 - JDK 17 ou superior
 - Git
+- Docker (Docker Desktop)
 
 ### Passo a passo
 
