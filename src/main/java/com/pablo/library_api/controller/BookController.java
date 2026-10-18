@@ -1,6 +1,7 @@
 package com.pablo.library_api.controller;
 
-import com.pablo.library_api.model.Book;
+import com.pablo.library_api.dto.BookRequest;
+import com.pablo.library_api.dto.BookResponse;
 import com.pablo.library_api.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +20,17 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> findAll(){
+    public List<BookResponse> findAll(){
         return bookService.findAll();
     }
 
     @PostMapping
-    public Book save(@Valid @RequestBody Book book){
-        return bookService.save(book);
+    public BookResponse save(@Valid @RequestBody BookRequest request){
+        return bookService.save(request);
     }
 
     @GetMapping("/{id}")
-    public Book findById(@PathVariable Long id) {
+    public BookResponse findById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 

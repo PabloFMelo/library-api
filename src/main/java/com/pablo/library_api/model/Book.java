@@ -18,23 +18,18 @@ public class Book {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Não pode ser vazio")
     private String title;
 
     @Column(nullable = false)
-    @NotBlank(message = "Não pode ser vazio")
     private String author;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Não pode ser vazio")
     private String isbn;
 
     @Column(nullable = false)
-    @Min(value = 1, message = "Deve ser no mínimo 1")
     private int totalCopies;
 
     @Column(nullable = false)
-    @Min(value = 0, message = "Deve ser no mínimo 1")
     private int availableCopies;
 }
 
