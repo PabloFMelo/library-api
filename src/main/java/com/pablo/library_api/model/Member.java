@@ -22,12 +22,9 @@ public class Member {
     private Long id;
 
     @Column (nullable = false)
-    @NotBlank(message = "Não pode ser vazio")
     private String name;
 
     @Column (nullable = false, unique = true)
-    @NotBlank(message = "Não pode ser vazio")
-    @Email
     private String email;
 
     @CreationTimestamp

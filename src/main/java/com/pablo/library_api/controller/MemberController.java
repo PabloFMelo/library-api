@@ -1,6 +1,7 @@
 package com.pablo.library_api.controller;
 
-import com.pablo.library_api.model.Member;
+import com.pablo.library_api.dto.MemberRequest;
+import com.pablo.library_api.dto.MemberResponse;
 import com.pablo.library_api.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +20,16 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<Member> findAll(){
+    public List<MemberResponse> findAll(){
         return memberService.findAll();
     }
 
     @PostMapping
-    public Member save(@Valid @RequestBody Member member){
-        return memberService.save(member);
+    public MemberResponse save(@Valid @RequestBody MemberRequest request){
+        return memberService.save(request);
     }
     @GetMapping("/{id}")
-    public Member findById(@PathVariable Long id){
+    public MemberResponse findById(@PathVariable Long id){
         return memberService.findById(id);
     }
 
