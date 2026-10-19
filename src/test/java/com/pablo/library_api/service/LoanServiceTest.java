@@ -1,5 +1,6 @@
 package com.pablo.library_api.service;
 
+import com.pablo.library_api.dto.LoanResponse;
 import com.pablo.library_api.exception.RecursoNaoEncontradoException;
 import com.pablo.library_api.exception.RegraDeNegocioException;
 import com.pablo.library_api.model.Book;
@@ -66,44 +67,50 @@ class LoanServiceTest {
     void deveCriarEmprestimoQuandoHaExemplaresDisponiveis() {
         // Arrange
         Book book = new Book();
+        book.setId(10L);
         book.setAvailableCopies(2);
         Member member = new Member();
+        member.setId(20L);
 
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
         when(loanRepository.save(any(Loan.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        Loan resultado = loanService.criarEmprestimo(1L, 1L);
+        LoanResponse resultado = loanService.criarEmprestimo(1L, 1L);
 
         // Assert
-        assertEquals(LoanStatus.ATIVO, resultado.getStatus());
+        assertEquals(LoanStatus.ATIVO, resultado.status());
         assertEquals(1, book.getAvailableCopies());
-        assertSame(book, resultado.getBook());
-        assertSame(member, resultado.getMember());
-        assertNotNull(resultado.getDueDate());
+        assertEquals(10L, resultado.bookId());
+        assertEquals(20L, resultado.memberId());
+        assertNotNull(resultado.dueDate());
     }
 
     @Test
     void deveDevolverEmprestimoAtivoERestaurarEstoque() {
         // Arrange
         Book book = new Book();
+        book.setId(10L);
         book.setAvailableCopies(1);
+        Member member = new Member();
+        member.setId(20L);
 
         Loan loan = new Loan();
         loan.setBook(book);
+        loan.setMember(member);
         loan.setStatus(LoanStatus.ATIVO);
 
         when(loanRepository.findById(1L)).thenReturn(Optional.of(loan));
         when(loanRepository.save(any(Loan.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        Loan resultado = loanService.devolverEmprestimo(1L);
+        LoanResponse resultado = loanService.devolverEmprestimo(1L);
 
         // Assert
-        assertEquals(LoanStatus.DEVOLVIDO, resultado.getStatus());
+        assertEquals(LoanStatus.DEVOLVIDO, resultado.status());
         assertEquals(2, book.getAvailableCopies());
-        assertNotNull(resultado.getReturnDate());
+        assertNotNull(resultado.returnDate());
     }
 
     @Test

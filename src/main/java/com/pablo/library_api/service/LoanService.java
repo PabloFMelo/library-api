@@ -1,5 +1,6 @@
 package com.pablo.library_api.service;
 
+import com.pablo.library_api.dto.LoanResponse;
 import com.pablo.library_api.exception.RecursoNaoEncontradoException;
 import com.pablo.library_api.exception.RegraDeNegocioException;
 import com.pablo.library_api.model.Book;
@@ -26,7 +27,21 @@ public class LoanService {
         this.memberRepository = memberRepository;
     }
 
-    public Loan criarEmprestimo(Long bookId, Long memberId) {
+    private LoanResponse toResponse(Loan loan) {
+        return new LoanResponse(
+                loan.getId(),
+                loan.getBook().getId(),
+                loan.getBook().getTitle(),
+                loan.getMember().getId(),
+                loan.getMember().getName(),
+                loan.getLoanDate(),
+                loan.getDueDate(),
+                loan.getReturnDate(),
+                loan.getStatus()
+        );
+    }
+
+    public LoanResponse criarEmprestimo(Long bookId, Long memberId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Livro não encontrado"));
 
@@ -44,13 +59,14 @@ public class LoanService {
         loan.setMember(member);
         loan.setDueDate(LocalDateTime.now().plusDays(7));
         loan.setStatus(LoanStatus.ATIVO);
-        return loanRepository.save(loan);
+        Loan saved = loanRepository.save(loan);
+        return toResponse(saved);
 
     }
-    public List<Loan> findAll() {
-        return loanRepository.findAll();
+    public List<LoanResponse> findAll() {
+        return loanRepository.findAll().stream().map(this::toResponse).toList();
     }
-    public Loan devolverEmprestimo(Long loanId) {
+    public LoanResponse devolverEmprestimo(Long loanId) {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Empréstimo não encontrado"));
 
@@ -64,8 +80,8 @@ public class LoanService {
         Book book = loan.getBook();
         book.setAvailableCopies(book.getAvailableCopies() + 1);
 
-        return loanRepository.save(loan);
+        Loan saved = loanRepository.save(loan);
+        return toResponse(saved);
 
     }
-
 }

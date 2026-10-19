@@ -1,6 +1,6 @@
 package com.pablo.library_api.controller;
 
-import com.pablo.library_api.model.Loan;
+import com.pablo.library_api.dto.LoanResponse;
 import com.pablo.library_api.service.LoanService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +17,16 @@ public class LoanController {
      }
 
      @GetMapping
-     public List<Loan> findAll(){
+     public List<LoanResponse> findAll(){
          return loanService.findAll();
      }
 
      @PostMapping
-     public Loan criarEmprestimo(@RequestParam Long bookId, @RequestParam Long memberId){
+     public LoanResponse criarEmprestimo(@RequestParam Long bookId, @RequestParam Long memberId){
         return loanService.criarEmprestimo(bookId, memberId);
      }
      @PutMapping("/{id}")
-     public Loan devolverEmprestimo(@PathVariable Long id){
+     public LoanResponse devolverEmprestimo(@PathVariable Long id){
          return loanService.devolverEmprestimo(id);
      }
 
