@@ -24,6 +24,8 @@
 - Devolução de empréstimos: registra a data de devolução, muda o status para `DEVOLVIDO` e devolve o exemplar ao estoque
 - Tratamento global de erros: respostas `404` quando um recurso não é encontrado e `400` quando uma regra de negócio é violada, sempre com mensagem clara
 - LoanService possui testes unitários das regras de negício.
+- O que a API recebe e devolve é separado das entidades do banco.
+- Validação com mensagens por campo.
 
 ## Como rodar o projeto
 

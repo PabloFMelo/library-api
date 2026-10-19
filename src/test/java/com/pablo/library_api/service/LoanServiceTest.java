@@ -19,9 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -143,8 +146,40 @@ class LoanServiceTest {
         verify(loanRepository, never()).save(any());
     }
 
+    @Test
+    void deveMarcarEmprestimosVencidosComoAtrasados() {
+        // Arrange
+        Loan primeiro = new Loan();
+        primeiro.setStatus(LoanStatus.ATIVO);
+        Loan segundo = new Loan();
+        segundo.setStatus(LoanStatus.ATIVO);
+        List<Loan> vencidos = List.of(primeiro, segundo);
 
+        when(loanRepository.findByStatusAndDueDateBefore(eq(LoanStatus.ATIVO), any(LocalDateTime.class)))
+                .thenReturn(vencidos);
 
+        // Act
+        int total = loanService.marcarEmprestimosAtrasados();
 
+        // Assert
+        assertEquals(2L, total);
+        assertEquals(LoanStatus.ATRASADO, primeiro.getStatus());
+        assertEquals(LoanStatus.ATRASADO, segundo.getStatus());
+        verify(loanRepository).saveAll(vencidos);
+    }
+    @Test
+    void naoDeveMarcarNadaQuandoNaoHaEmprestimosVencidos() {
+        // Arrange: o repositório não encontra nenhum empréstimo vencido
+        List<Loan> vencidos = List.of();
 
+        when(loanRepository.findByStatusAndDueDateBefore(eq(LoanStatus.ATIVO), any(LocalDateTime.class)))
+                .thenReturn(vencidos);
+
+        // Act
+        int total = loanService.marcarEmprestimosAtrasados();
+
+        // Assert
+        assertEquals(0, total);
+        verify(loanRepository).saveAll(vencidos);
+    }
 }

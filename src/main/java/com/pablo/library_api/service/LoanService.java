@@ -84,4 +84,14 @@ public class LoanService {
         return toResponse(saved);
 
     }
+    public int marcarEmprestimosAtrasados() {
+        List<Loan> vencidos = loanRepository.findByStatusAndDueDateBefore(LoanStatus.ATIVO, LocalDateTime.now());
+
+        for (Loan loan : vencidos) {
+            loan.setStatus(LoanStatus.ATRASADO);
+        }
+
+        loanRepository.saveAll(vencidos);
+        return vencidos.size();
+    }
 }
