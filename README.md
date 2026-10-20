@@ -26,6 +26,8 @@
 - LoanService possui testes unitários das regras de negício.
 - O que a API recebe e devolve é separado das entidades do banco.
 - Validação com mensagens por campo.
+- O sistema marca como ATRASADO os empréstimos com prazo vencido, por uma tarefa agendada de hora em hora.
+- Empréstimos atrasados ainda podem ser devolvidos.
 
 ## Como rodar o projeto
 
