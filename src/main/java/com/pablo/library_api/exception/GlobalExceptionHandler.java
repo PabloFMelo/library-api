@@ -27,5 +27,9 @@ public class GlobalExceptionHandler {
                 .forEach(erro -> erros.put(erro.getField(), erro.getDefaultMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<String> handleCredenciais(CredenciaisInvalidasException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
 
 }

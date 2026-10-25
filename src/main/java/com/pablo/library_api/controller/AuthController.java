@@ -1,5 +1,7 @@
 package com.pablo.library_api.controller;
 
+import com.pablo.library_api.dto.LoginRequest;
+import com.pablo.library_api.dto.LoginResponse;
 import com.pablo.library_api.dto.RegisterRequest;
 import com.pablo.library_api.dto.RegisterResponse;
 import com.pablo.library_api.service.UserService;
@@ -25,5 +27,9 @@ public class AuthController {
     @PostMapping("/register")
     public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
         return userService.register(request);
+    }
+    @PostMapping("/login")
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+        return userService.login(request);
     }
 }
