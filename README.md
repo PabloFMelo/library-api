@@ -13,6 +13,9 @@
 - Postman (para testes)
 - JUnit 5 
 - Mockito
+- Spring Security
+- JWT (jjwt)
+- BCrypt
 
 ## Funcionalidades
 
@@ -28,6 +31,8 @@
 - Validação com mensagens por campo.
 - O sistema marca como ATRASADO os empréstimos com prazo vencido, por uma tarefa agendada de hora em hora.
 - Empréstimos atrasados ainda podem ser devolvidos.
+- Cadastro e login de usuários, com senha criptografada.
+- Rotas protegidas por token.
 
 ## Como rodar o projeto
 
@@ -38,6 +43,8 @@
 - Docker (Docker Desktop)
 
 ### Passo a passo
+
+Como usar a API: Fazer POST /auth/register, depois POST /auth/login, e usar o token no botão Authorize do Swagger
 
 1. Clone o repositório e entre na pasta do projeto:
 
@@ -108,7 +115,8 @@ docker compose up -d
 | GET    | `/loans`                                 | Lista todos os empréstimos          |
 | POST   | `/loans?bookId={bookId}&memberId={memberId}` | Cria um empréstimo                  |
 | PUT    | `/loans/{id}`                            | Registra a devolução do empréstimo  |
- 
+
+
 *Exemplo JSON*
 
 ```json 
@@ -120,5 +128,36 @@ docker compose up -d
   "availableCopies": 2
 }
 ```
+### Autenticação
+
+| Método | Rota | Acesso | Descrição |
+|--------|------|--------|-----------|
+| POST | `/auth/register` | Público | Cadastra um usuário |
+| POST | `/auth/login` | Público | Autentica e devolve um token JWT |
+
+Todas as outras rotas exigem o cabeçalho `Authorization: Bearer <token>`. Sem um token válido, a API responde `401`.
+
+**Como autenticar:**
+
+1. Cadastre um usuário em `POST /auth/register`:
+
+```json
+{
+  "username": "pablo",
+  "password": "senha123"
+}
+```
+
+2. Faça login em `POST /auth/login` com os mesmos dados. A resposta traz o token:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+3. Envie o token nas próximas requisições. No Swagger, clique em **Authorize** e cole o token, sem a palavra `Bearer`.
+
+O token vale por 1 hora. Depois disso, faça login de novo.
 
 
