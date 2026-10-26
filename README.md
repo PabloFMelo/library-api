@@ -84,9 +84,6 @@ docker compose up -d
 
 3. A API ficará disponível em `http://localhost:8080`.
 
-> **Observação:** o projeto usa o banco H2 em memória, então todos os dados são apagados sempre que a aplicação é reiniciada.
-
-
 ## Endpoints da API
 
 ### Livros
